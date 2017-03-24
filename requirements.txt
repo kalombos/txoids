@@ -1,0 +1,2 @@
+https://github.com/kalombos/pynetsnmp/archive/master.zip
+Twisted==16.0.0
