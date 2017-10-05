@@ -6,7 +6,7 @@ from txoids.engine import SnmpParser
 @defer.inlineCallbacks
 def fetch_data():
     parser = SnmpParser(
-        '172.20.25.4', 'mymypub',
+        '172.20.25.4', community='mymypub',
         community_write='mymypriv', model='D-Link DES-3200-28'
     )
 
@@ -34,7 +34,6 @@ def fetch_data():
 
 
 def main():
-    print('start')
     d = fetch_data()
     d.addBoth(lambda x: reactor.stop())
     reactor.run()
