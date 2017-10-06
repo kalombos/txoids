@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 from version import VERSION
 
 
@@ -14,8 +14,7 @@ if __name__ == '__main__':
           author_email='nogamemorebrain@gmail.com',
           maintainer='kalombo',
           maintainer_email='nogamemorebrain@gmail.com',
-          package_dir={'txoids': '.'},
-          packages=['txoids'],
+          packages=find_packages(),
           install_requires=[
               'pynetsnmp-2',
           ],
