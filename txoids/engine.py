@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from twisted.internet import defer
 from generic.deferreds import (
     FetchArp,
     FetchModel,
@@ -37,6 +38,12 @@ class SnmpParser(object):
 
     def fetch_model(self):
         return self.make_action(FetchModel)
+
+    @defer.inlineCallbacks
+    def detect_model(self):
+        model = yield self.fetch_model()
+        self.model = model
+        defer.returnValue(model)
 
     def fetch_serial_number(self):
         return self.make_action(FetchSerialNumber)

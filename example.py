@@ -6,18 +6,21 @@ from txoids.engine import SnmpParser
 @defer.inlineCallbacks
 def fetch_data():
     parser = SnmpParser(
-        '172.20.25.4', community='mymypub',
-        community_write='mymypriv', model='D-Link DES-3200-28'
+        '172.20.25.4', community='password', community_write='password',
+        model='D-Link DES-3200-28'
     )
 
-    result = yield parser.fetch_arp()
+    result = yield parser.detect_model()
+    print(result)
+
+    result = yield parser.fetch_igmp()
+    print(result)
+
+    result = yield parser.fetch_ports()
     print(result)
 
     port = 1
     result = yield parser.cable_diag(port)
-    print(result)
-
-    result = yield parser.fetch_model()
     print(result)
 
     result = yield parser.fetch_serial_number()
@@ -33,8 +36,13 @@ def fetch_data():
     print(result)
 
 
+def print_error(f):
+    print(f)
+
+
 def main():
     d = fetch_data()
+    d.addErrback(print_error)
     d.addBoth(lambda x: reactor.stop())
     reactor.run()
 

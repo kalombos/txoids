@@ -1,18 +1,11 @@
 # -*- coding: utf-8 -*-
 
+from txoids.utils import FullDict
 from .oids import OIDS_MAP
 from collections import OrderedDict
 import re
 import binascii
 import logging
-
-
-class FullDict(dict):
-
-    def __getitem__(self, item):
-        if item not in self:
-            self[item] = FullDict()
-        return super(FullDict, self).__getitem__(item)
 
 
 class PortsProcessor(object):
@@ -78,7 +71,7 @@ class PortsProcessor(object):
             ports[port_index]['medium_types'] = ports[port_index]['medium_types'].values()
         return ports
 
-    def get_ports(self, result):
+    def get_data(self, result):
         ports_result = FullDict()
         self.process_main_oids(result, ports_result)
         self.process_lldp_oid(result, ports_result)

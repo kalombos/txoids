@@ -1,25 +1,29 @@
 # -*- coding: utf-8 -*-
 from txoids.cable_diag.oids import OIDS_MAP
+from txoids.generic.processors import MultiOidMapProcessor
 
 
 class StopDiagnostic(Exception):
     pass
 
 
-class CableDiagProcessor(object):
-    def __init__(self, parser, port):
-        self.parser = parser
-        self.port = port
-        eq_type_data = OIDS_MAP.get(self.parser.model, OIDS_MAP['default'])
+class CableDiagProcessor(MultiOidMapProcessor):
+    oids_map = OIDS_MAP
 
-        self.statuses = eq_type_data['statuses']
-        self.oids = eq_type_data['oids']
+    def __init__(self, parser, port):
+        super(CableDiagProcessor, self).__init__(parser, port)
+        self.port = port
+        self.statuses = self.oids_set['statuses']
+        self.oids = self.oids_set['oids']
         self.cable_diag = {
             'port_type': None, 'link_status': None, 'test1': None,
             'test2': None, 'test3': None, 'test4': None, 'length1': None,
             'length2': None, 'length3': None, 'length4': None,
             'error': None, 'test_status': 0
         }
+
+    def get_oids(self):
+        return self.get_oids_set()['oids']
 
     def get_oid(self, oid_name):
         return "%s.%s" % (self.oids[oid_name], self.port)
