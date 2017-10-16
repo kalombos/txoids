@@ -3,12 +3,22 @@ from twisted.internet import reactor
 from twisted.internet.task import deferLater
 
 
+def full_dict2_dict(full_dict):
+    for item in full_dict:
+        if isinstance(full_dict[item], FullDict):
+            full_dict[item] = full_dict2_dict(full_dict[item])
+    return dict(full_dict)
+
+
 class FullDict(dict):
 
     def __getitem__(self, item):
         if item not in self:
             self[item] = FullDict()
         return super(FullDict, self).__getitem__(item)
+
+    def to_dict(self):
+        return full_dict2_dict(self.copy())
 
 
 def pretty_mac(mac_string):

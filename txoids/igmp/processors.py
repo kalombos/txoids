@@ -3,13 +3,26 @@ import binascii
 from txoids.generic.processors import MultiOidMapProcessor
 from txoids.igmp.oids import OIDS_MAP
 from txoids.utils import FullDict, chunks
+import re
 
 
 class IGMPProcessor(MultiOidMapProcessor):
 
     oids_map = OIDS_MAP
+    ip_regex = r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$"
 
     port_fields = ['GrpRouterPorts', 'GrpIncludeMemberPorts', 'GrpExcludeMemberPorts']
+    ip_fields = ['ip', 'group', 'GrpGrpAddr']
+
+    def decode_ip(self, value):
+        if re.match(self.ip_regex, value):
+            return value
+        value = str(value)
+        bin_str = binascii.b2a_hex(value)
+        octets = []
+        for chunk in chunks(bin_str, 2):
+            octets.append(str(int(chunk, 16)))
+        return '.'.join(octets)
 
     def decode_ports(self, value):
         value = str(value)
@@ -33,9 +46,18 @@ class IGMPProcessor(MultiOidMapProcessor):
             for group, value in values.items():
                 group_id, group_name = group.replace(oid + '.', '').split('.', 1)
                 column_name = field['columns'].get(group_id)
-                field_data[group_name][column_name] = value
+                if column_name:
+                    field_data[group_name][column_name] = value
+
+            field_data = field_data.to_dict()
             data[field_name] = field_data.values()
-        for value in data['snooping_groups']:
-            for field in self.port_fields:
-                value[field] = self.decode_ports(value[field])
+
+        for group, values in data.items():
+            for value in values:
+                for field in self.port_fields:
+                    if field in value:
+                        value[field] = self.decode_ports(value[field])
+                for field in self.ip_fields:
+                    if field in value:
+                        value[field] = self.decode_ip(value[field])
         return data
