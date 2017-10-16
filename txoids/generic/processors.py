@@ -34,7 +34,7 @@ class MultiOidMapProcessor(AbstractProccessor):
         oids_map = self.oids_map.copy()
         default_oid_set = oids_map.pop('default', None)
         for pattern, oid_set in oids_map.items():
-            if re.match(pattern, self.parser.model):
+            if re.search(pattern, self.parser.model):
                 return oid_set
         return default_oid_set
 
