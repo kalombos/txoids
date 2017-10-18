@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from twisted.internet import defer
-from generic.deferreds import (
+from txoids.generic.deferreds import (
     FetchArp,
     FetchModel,
     FetchSerialNumber,
@@ -9,9 +9,9 @@ from generic.deferreds import (
     FetchFirmwareVersion,
     FetchMacAddress
 )
-from cable_diag.deferreds import CableDiag
-from ports.deferreds import FetchPorts
-from igmp.deferreds import FetchIgmp
+from txoids.cable_diag.deferreds import CableDiag
+from txoids.ports.deferreds import FetchPorts
+from txoids.igmp.deferreds import FetchIgmp
 
 
 class SnmpParser(object):
