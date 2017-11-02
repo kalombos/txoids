@@ -3,7 +3,7 @@ from pynetsnmp.twistedsnmp import AgentProxy
 from pynetsnmp.tableretriever import TableRetriever
 from txoids.generic import processors
 
-DEFAULT_TABLE_SETTINGS = {'timeout': 15, 'maxRepetitions': 35, 'limit': 10000}
+DEFAULT_TABLE_SETTINGS = {'timeout': 15, 'maxRepetitions': 10, 'limit': 10000}
 DEFAULT_PROXY_TIMEOUT = 15
 
 

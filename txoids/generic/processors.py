@@ -13,7 +13,7 @@ class AbstractProccessor(object):
         return []
 
     def get_data(self, result):
-        return result.values()[0]
+        return list(result.values())[0]
 
 
 class OidProcessor(AbstractProccessor):
@@ -104,5 +104,5 @@ class FetchMacAddressProccessor(OidMapProcessor):
     }
 
     def get_data(self, result):
-        mac_string = super(FetchMacAddressProccessor, self).get_data(result)
+        mac_string = list(result.values())[0]
         return pretty_mac(mac_string)

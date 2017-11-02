@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from twisted.internet import reactor
 from twisted.internet.task import deferLater
+import six
 
 
 def full_dict2_dict(full_dict):
@@ -22,7 +23,10 @@ class FullDict(dict):
 
 
 def pretty_mac(mac_string):
-    return ':'.join('%02x' % ord(b) for b in mac_string)
+    if six.PY3:
+        return ':'.join('%02x' % b for b in mac_string)
+    else:
+        return ':'.join('%02x' % ord(b) for b in mac_string)
 
 
 def deferredSleep(howLong):
@@ -31,5 +35,5 @@ def deferredSleep(howLong):
 
 def chunks(l, n):
 
-    for i in xrange(0, len(l), n):
+    for i in range(0, len(l), n):
         yield l[i:i + n]

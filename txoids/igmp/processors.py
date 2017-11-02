@@ -4,6 +4,7 @@ from txoids.generic.processors import MultiOidMapProcessor
 from txoids.igmp.oids import OIDS_MAP
 from txoids.utils import FullDict, chunks
 import re
+from six import binary_type
 
 
 class IGMPProcessor(MultiOidMapProcessor):
@@ -25,7 +26,7 @@ class IGMPProcessor(MultiOidMapProcessor):
         return '.'.join(octets)
 
     def decode_ports(self, value):
-        value = str(value)
+        value = binary_type(value)
         bin_str = binascii.b2a_hex(value)
         result = ''
         for chunk in chunks(bin_str, 2):
@@ -50,7 +51,7 @@ class IGMPProcessor(MultiOidMapProcessor):
                     field_data[group_name][column_name] = value
 
             field_data = field_data.to_dict()
-            data[field_name] = field_data.values()
+            data[field_name] = list(field_data.values())
 
         for group, values in data.items():
             for value in values:
