@@ -608,6 +608,48 @@ OIDS_MAP = {
             }
         }
     },
+    "D-Link DGS-3000-28SC": {
+        'medium_type': {
+            'oid': '.1.3.6.1.4.1.171.11.133.5.1.2.3.1.1.2',
+            'values': {
+                '1': 'copper', '2': 'fiber'
+            }
+        },
+        'mdix': {
+            'oid': '.1.3.6.1.4.1.171.11.133.5.1.2.3.2.1.10',
+            'values': {'1': 'auto', '2': 'normal', '3': 'cross'}
+        },
+        'flow_control': {
+            'oid': '.1.3.6.1.4.1.171.11.133.5.1.2.3.2.1.6',
+            'values': {
+                'values': {'1': 'other', '2': 'disabled', '3': 'enabled'}
+            }
+        },
+        'nway_state': {
+            'oid': '.1.3.6.1.4.1.171.11.133.5.1.2.3.2.1.5',
+            'values': {
+                '1': 'other', '2': 'nway-enabled', '3': 'nway-disabled-10Mbps-Half',
+                '4': 'nway-disabled-10Mbps-Full', '5': 'nway-disabled-100Mbps-Half',
+                '6': 'nway-disabled-100Mbps-Full', '7': 'nway-disabled-1Gigabps-Half',
+                '8': 'nway-disabled-1Gigabps-Full', '9': 'nway-disabled-1Gigabps-Full-master',
+                '10': 'nway-disabled-1Gigabps-Full-slave'
+            }
+        },
+        'nway_status': {
+            'oid': '.1.3.6.1.4.1.171.11.133.5.1.2.3.1.1.6',
+            'values': {
+                '0': 'link-down', '1': 'full-10Mbps-8023x',
+                '2': 'full-10Mbps-none', '3': 'half-10Mbps-backp',
+                '4': 'half-10Mbps-none', '5': 'full-100Mbps-8023x',
+                '6': 'full-100Mbps-none', '7': 'half-100Mbps-backp',
+                '8': 'half-100Mbps-none', '9': 'full-1Gigabps-8023x',
+                '10': 'full-1Gigabps-none', '11': 'half-1Gigabps-backp',
+                '12': 'half-1Gigabps-none', '13': 'full-10Gigabps-8023x',
+                '14': 'full-10Gigabps-none', '15': 'half-10Gigabps-8023x',
+                '16': 'half-10Gigabps-none', '17': 'empty', '18': 'err-disabled'
+            }
+        }
+    },
     "D-Link DGS-1210-20/ME": {
         'medium_type': {
             'oid': '.1.3.6.1.4.1.171.10.76.31.1.1.13.1.2',
