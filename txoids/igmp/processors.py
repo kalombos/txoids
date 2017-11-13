@@ -36,7 +36,7 @@ class IGMPProcessor(MultiOidMapProcessor):
         for num, port in enumerate(result, 1):
             if port == '1':
                 ports.append(str(num))
-        return ','.join(ports)
+        return ports
 
     def get_data(self, result):
         data = {}
