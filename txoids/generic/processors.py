@@ -62,6 +62,22 @@ class FetchArpProcessor(OidProcessor):
         return results
 
 
+class FetchFdbProcessor(OidProcessor):
+
+    oid = '.1.3.6.1.2.1.17.7.1.2.2.1.2'
+
+    def get_data(self, result):
+        fdbs = super(FetchFdbProcessor, self).get_data(result)
+        results = []
+        for key in fdbs:
+            tmp = list(map(int, key.split(".")[1:]))
+            vlan = tmp[-7]
+            mac = "%02x:%02x:%02x:%02x:%02x:%02x" % tuple(i for i in tmp[-6:])
+            port = int(fdbs[key])
+            results.append({'mac': mac, 'vlan': vlan, 'port': port})
+        return results
+
+
 class FetchModelProccessor(OidProcessor):
     oid = '1.3.6.1.2.1.1.1.0'
 

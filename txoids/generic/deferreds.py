@@ -72,6 +72,11 @@ class FetchArp(BaseAction):
     method = 'walk'
 
 
+class FetchFdb(BaseAction):
+    processor_class = processors.FetchFdbProcessor
+    method = 'walk'
+
+
 class FetchModel(BaseAction):
     processor_class = processors.FetchModelProccessor
 

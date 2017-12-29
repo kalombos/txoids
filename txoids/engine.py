@@ -3,6 +3,7 @@
 from twisted.internet import defer
 from txoids.generic.deferreds import (
     FetchArp,
+    FetchFdb,
     FetchModel,
     FetchSerialNumber,
     FetchHardwareVersion,
@@ -29,6 +30,9 @@ class SnmpParser(object):
 
     def fetch_arp(self, **kwargs):
         return self.make_action(FetchArp)
+
+    def fetch_fdb(self, **kwargs):
+        return self.make_action(FetchFdb)
 
     def cable_diag(self, port):
         return self.make_action(CableDiag, port)
