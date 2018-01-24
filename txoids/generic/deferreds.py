@@ -95,3 +95,7 @@ class FetchFirmwareVersion(BaseAction):
 
 class FetchMacAddress(BaseAction):
     processor_class = processors.FetchMacAddressProccessor
+
+
+class FetchUptime(BaseAction):
+    processor_class = processors.FetchUptimeProccessor

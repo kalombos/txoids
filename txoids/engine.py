@@ -8,7 +8,8 @@ from txoids.generic.deferreds import (
     FetchSerialNumber,
     FetchHardwareVersion,
     FetchFirmwareVersion,
-    FetchMacAddress
+    FetchMacAddress,
+    FetchUptime
 )
 from txoids.cable_diag.deferreds import CableDiag
 from txoids.ports.deferreds import FetchPorts
@@ -42,6 +43,9 @@ class SnmpParser(object):
 
     def fetch_model(self):
         return self.make_action(FetchModel)
+
+    def fetch_uptime(self):
+        return self.make_action(FetchUptime)
 
     @defer.inlineCallbacks
     def detect_model(self):

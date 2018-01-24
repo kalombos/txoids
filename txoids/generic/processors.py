@@ -122,3 +122,7 @@ class FetchMacAddressProccessor(OidMapProcessor):
     def get_data(self, result):
         mac_string = list(result.values())[0]
         return pretty_mac(mac_string)
+
+
+class FetchUptimeProccessor(OidProcessor):
+    oid = '1.3.6.1.2.1.1.3.0'
