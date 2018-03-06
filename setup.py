@@ -1,10 +1,9 @@
 from setuptools import setup, find_packages
-from version import VERSION
 
 
 if __name__ == '__main__':
     setup(name='txoids',
-          version=VERSION,
+          version='0.1.8',
           url="https://github.com/kalombos/txoids",
           download_url="https://github.com/kalombos/txoids",
           description='Tool for parsing switches using SNMP',
