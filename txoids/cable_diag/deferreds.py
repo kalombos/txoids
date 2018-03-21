@@ -40,7 +40,7 @@ class CableDiag(BaseAction):
             self.processor.check_test_status(status)
 
             # Waiting for diagnotic is stopped
-            for _ in xrange(20):
+            for _ in range(20):
                 yield deferredSleep(0.5)
                 oids = [self.processor.get_oid('check')]
                 result = yield read_proxy.get(oids, **self.proxy_settings)
