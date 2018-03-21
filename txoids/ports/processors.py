@@ -122,7 +122,7 @@ class PortsProcessor(object):
             if port['type'] != 6 and port['type'] != 117:
                 continue
 
-            port['name'] = self.convert_portname(port['name'])
+            port['name'] = self.convert_portname(port['name'].decode('ascii'))
 
             if port['name'].startswith('ch') and port['index'] in range(301, 333):
                 continue
