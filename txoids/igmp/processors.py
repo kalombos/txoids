@@ -10,7 +10,7 @@ from six import binary_type
 class IGMPProcessor(MultiOidMapProcessor):
 
     oids_map = OIDS_MAP
-    ip_regex = r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$"
+    ip_regex = b"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$"
 
     port_fields = ['GrpRouterPorts', 'GrpIncludeMemberPorts', 'GrpExcludeMemberPorts']
     ip_fields = ['ip', 'group', 'GrpGrpAddr']
@@ -18,7 +18,6 @@ class IGMPProcessor(MultiOidMapProcessor):
     def decode_ip(self, value):
         if re.match(self.ip_regex, value):
             return value
-        value = str(value)
         bin_str = binascii.b2a_hex(value)
         octets = []
         for chunk in chunks(bin_str, 2):
