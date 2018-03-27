@@ -1,18 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from txoids.utils import FullDict
 from .oids import OIDS_MAP
 from collections import OrderedDict
 import re
 import binascii
 import logging
-
-
-class FullDict(dict):
-
-    def __getitem__(self, item):
-        if item not in self:
-            self[item] = FullDict()
-        return super(FullDict, self).__getitem__(item)
+import six
 
 
 class PortsProcessor(object):
@@ -46,8 +40,8 @@ class PortsProcessor(object):
         self.medium_type_oids = OIDS_MAP.get(self.parser.model, {})
 
     def process_main_oids(self, result, ports):
-        for field, oid in self.main_oids.iteritems():
-            for key, value in result[oid].iteritems():
+        for field, oid in self.main_oids.items():
+            for key, value in result[oid].items():
                 port_index = key.split('.')[-1]
                 ports[port_index][field] = value
                 ports[port_index]['index'] = port_index
@@ -63,14 +57,14 @@ class PortsProcessor(object):
 
     def process_lldp_oid(self, result, ports):
         field = 'lldp'
-        for key, value in result[self.lldp_oid].iteritems():
+        for key, value in result[self.lldp_oid].items():
             port_index = self.get_port_index(ports, key)
             ports[port_index][field] = value
 
     def process_medium_types(self, result, ports):
-        for field, description in self.medium_type_oids.iteritems():
+        for field, description in self.medium_type_oids.items():
             oid = description['oid']
-            for key, value in result[oid].iteritems():
+            for key, value in result[oid].items():
                 port_index = key.split('.')[-2]
                 medium_type_index = key.split('.')[-1]
                 ports[port_index]['medium_types'][medium_type_index][field] = value
@@ -78,7 +72,7 @@ class PortsProcessor(object):
             ports[port_index]['medium_types'] = ports[port_index]['medium_types'].values()
         return ports
 
-    def get_ports(self, result):
+    def get_data(self, result):
         ports_result = FullDict()
         self.process_main_oids(result, ports_result)
         self.process_lldp_oid(result, ports_result)
@@ -101,13 +95,13 @@ class PortsProcessor(object):
             return portname
 
         while begin > 64:
-            begin = begin - 64
+            begin -= 64
             module += 1
         return "%d:%d" % (module, begin)
 
     def process_lldp(self, lldp):
         if lldp:
-            return binascii.b2a_hex(lldp)
+            return binascii.b2a_hex(lldp).decode('ascii')
 
     def process_speed(self, port_speed):
         port_speed = int(port_speed)
@@ -128,18 +122,17 @@ class PortsProcessor(object):
             if port['type'] != 6 and port['type'] != 117:
                 continue
 
-            port['name'] = self.convert_portname(port['name'])
+            port['name'] = self.convert_portname(port['name'].decode('ascii'))
 
-            if port['name'].startswith('ch') and port['index'] in xrange(301, 333):
+            if port['name'].startswith('ch') and port['index'] in range(301, 333):
                 continue
 
             port['lldp'] = self.process_lldp(port['lldp'])
             port['speed'] = self.process_speed(port['speed'])
-            port['alias'] = port['alias']
-            port['oper'] = port['oper']
-            port['admin'] = port['admin']
+            if isinstance(port['alias'], six.binary_type):
+                port['alias'] = port['alias'].decode()
             for medium_type in port['medium_types']:
-                for field, value in medium_type.iteritems():
+                for field, value in medium_type.items():
                     value = str(value)
                     values = self.medium_type_oids[field]['values']
                     if values and value not in values:
@@ -154,7 +147,7 @@ class PortsProcessor(object):
                 self.process_nway_status(medium_type)
                 prefix = medium_type['medium_type']
                 del medium_type['medium_type']
-                for field, value in medium_type.iteritems():
+                for field, value in medium_type.items():
                     field = "%s_%s" % (prefix, field)
                     port[field] = value
             del port['medium_types']
@@ -166,7 +159,7 @@ class PortsProcessor(object):
         return sorted(ports, key=lambda x: int(x['index']))
 
     def get_map_value(self, map_, value):
-        for field, map_value in map_.iteritems():
+        for field, map_value in map_.items():
             if field.lower() in value.lower():
                 return map_value
         return value
@@ -220,7 +213,7 @@ class PortsProcessor(object):
 
     def get_oids(self):
         medium_type_oids = [x['oid'] for x in self.medium_type_oids.values()]
-        return self.main_oids.values() + [self.lldp_oid] + medium_type_oids
+        return list(self.main_oids.values()) + [self.lldp_oid] + medium_type_oids
 
 
 class DES3010GPortsProcessor(PortsProcessor):
@@ -235,9 +228,9 @@ class DES3010GPortsProcessor(PortsProcessor):
         return medium_type, medium_type_index
 
     def process_medium_types(self, result, ports):
-        for field, description in self.medium_type_oids.iteritems():
+        for field, description in self.medium_type_oids.items():
             oid = description['oid']
-            for key, value in result[oid].iteritems():
+            for key, value in result[oid].items():
                 port_index = key.split('.')[-1]
                 medium_type, medium_type_index = self.get_medium_type(port_index)
                 ports[port_index]['medium_types'][medium_type_index][field] = value
