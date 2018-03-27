@@ -120,8 +120,8 @@ class FetchMacAddressProccessor(OidMapProcessor):
     }
 
     def get_data(self, result):
-        mac_string = list(result.values())[0]
-        return pretty_mac(mac_string)
+        mac_bytes = list(result.values())[0]
+        return mac_bytes.decode('ascii').replace('-', ':').lower()
 
 
 class FetchUptimeProccessor(OidProcessor):

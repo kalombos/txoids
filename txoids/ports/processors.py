@@ -101,7 +101,7 @@ class PortsProcessor(object):
 
     def process_lldp(self, lldp):
         if lldp:
-            return binascii.b2a_hex(lldp)
+            return binascii.b2a_hex(lldp).decode('ascii')
 
     def process_speed(self, port_speed):
         port_speed = int(port_speed)
