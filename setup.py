@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 if __name__ == '__main__':
     setup(name='txoids',
-          version='0.1.13',
+          version='0.1.14',
           url="https://github.com/kalombos/txoids",
           download_url="https://github.com/kalombos/txoids",
           description='Tool for parsing switches using SNMP',
